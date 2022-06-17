@@ -1,0 +1,8 @@
+# The test params provided in this file are read by tests/module_unit_test.go.
+# See the "Testing" section in the README for more info.
+
+# Map output names to arbitrary values of any type
+expect_outputs:
+
+# Enable/diable verbose logging
+verbose_logging: false

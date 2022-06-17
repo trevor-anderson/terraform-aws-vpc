@@ -1,0 +1,68 @@
+formatter: "markdown table"
+
+version: "~> 0.13"
+
+# header-from: ""
+# footer-from: ""
+
+content: |-
+  <!-- prettier-ignore-start -->
+
+  ---
+
+  ## ⚙️ Module Usage
+
+  {{ .Requirements }}
+
+  {{ .Providers }}
+
+  {{ .Modules }}
+
+  {{ .Resources }}
+
+  {{ .Inputs }}
+
+  {{ .Outputs }}
+
+  ---
+
+  <!-- prettier-ignore-end -->
+
+# recursive:
+#   enabled: false
+#   path: modules
+
+# sections:
+#   hide: []
+#   show: []
+
+output:
+  file: "README.md"
+  mode: inject
+  template: |-
+    <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+    {{ .Content }}
+    <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
+
+# output-values:
+#   enabled: false
+#   from: ""
+
+# sort:
+#   enabled: true
+#   by: name
+
+settings:
+  indent: 3
+  anchor: true
+  # color: true
+  # default: true
+  # description: false
+  # escape: true
+  # hide-empty: false
+  # html: true
+  # lockfile: true
+  # read-comments: true
+  # required: true
+  # sensitive: true
+  # type: true

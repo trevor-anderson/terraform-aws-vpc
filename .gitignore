@@ -1,0 +1,44 @@
+######################################################################
+### GIT IGNORE
+######################################################################
+# Terraform gitignore 👉 https://github.com/github/gitignore/blob/master/Terraform.gitignore
+#
+
+# Local .terraform directories
+**/.terraform
+**/.terraform/*
+
+# .tfstate files
+*.tfstate
+*.tfstate.*
+
+# Crash log files
+crash.log
+
+# Ignore .tfvars files, except the one used for testing purposes
+*.tfvars
+!tests/test.tfvars
+
+# Ignore override files (use negated pattern for overrides you wish to include)
+override.tf
+override.tf.json
+*_override.tf
+*_override.tf.json
+
+# Ignore CLI configuration files
+.terraformrc
+terraform.rc
+
+# Terragrunt docs recommend adding this to gitignore
+.terragrunt-cache
+
+# tfsec module cache dirs
+**/.tfsec/cache
+
+# Ignore dev notes files with these prefixes
+NOTE*
+IDEA*
+TODO*
+FIXME*
+
+######################################################################

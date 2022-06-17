@@ -1,0 +1,29 @@
+name: Test
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+      - next
+    paths:
+      - "**/*.tf"
+      - "**/*.tfvars"
+      - "**/*.tftpl"
+      - "**/*.go"
+      - "**/README.md"
+      - ".github/workflows/test.yaml"
+      - ".github/workflows/release.yaml"
+
+jobs:
+  run-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-go@v3
+        with:
+          go-version-file: "tests/go.mod"
+      # TODO Add workflow step here which authenticates GitHub OIDC Provider (see README for more info).
+      - name: Run Tests
+        shell: bash
+        run: cd tests && go test -v -timeout 30m
