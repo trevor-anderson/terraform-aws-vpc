@@ -25,65 +25,6 @@
 
 ---
 
-<!-- TODO remove the below section upon completion of post-init setup -->
-
-### **_Post-Initialization Setup_**
-
-1. Review the base template files to ensure your project's needs are met. Some helpful tips:
-
-   - If you'd like to change the [.gitignore](/.gitignore), GitHub has some [awesome templates here](https://github.com/github/gitignore).
-   - You can also query the [gitignore.io API](https://docs.gitignore.io/install/command-line) to find a list of recommended gitignore entries to suit virtually any type of project.
-
-     ```bash
-     # Obtain a list of available project-type options from the gitignore.io API.
-     curl -sL https://www.toptal.com/developers/gitignore/api/list | sed 's/,/\n/g' > ./gitignore_io_api_options
-
-     # Review the resultant list in "./gitignore_io_api_options" to find options that fit your project.
-     # You can query gitignore entries for one or more options by separating them with commas.
-     # For example, if your project will contain both Terraform and Terragrunt files:
-     curl -sL https://www.toptal.com/developers/gitignore/api/terraform,terragrunt >> .gitignore
-     ```
-
-2. Set up [**pre-commit**](https://pre-commit.com/#install):
-
-   1. Ensure it's [installed](https://pre-commit.com/#install) locally or in an executable image.
-   2. Some awesome pre-commit hooks have already been added to the [**pre-commit config file**](/.pre-commit-config.yaml) for Terraform projects. If you're looking for more hooks to add, the pre-commit project provides a complete list of [supported hooks here](https://pre-commit.com/hooks.html). Some popular hook sources:
-      - ["Out-of-the-Box" pre-commit Hooks](https://github.com/pre-commit/pre-commit-hooks)
-      - [pre-commit Hooks from gruntwork.io](https://github.com/gruntwork-io/pre-commit)
-      - [Some Terraform-specific pre-commit Hooks](https://github.com/antonbabenko/pre-commit-terraform)
-   3. Run `pre-commit install` to ensure your git hooks are present.
-
-3. Enable the [**Semantic-Release GitHub Action**][semantic-gh-action-url]:
-
-   1. [Create a GitHub Personal Access Token][gh-pat-docs-url]. When creating the token, the minimum required scopes are:
-      - `repo` for a private repository
-      - `public_repo` for a public repository
-   2. Add a [GitHub Secret][gh-action-docs-url] to your repo named "SEMANTIC_RELEASE_TOKEN" with the value set to the new PAT you created in the previous step.
-   3. Once the secret has been added to your repo, you can delete the "check-required-secret" job in the ["Release" GitHub Action workflow](/.github/workflows/release.yaml) (it was included so you can push initialization commits without triggering a bunch of failed GH Action runs). Note that the "Release" workflow will not run unless the ["Test" workflow](/.github/workflows/test.yaml) completes successfully.
-   4. (Optional) You can have GH Issues auto-assigned on release failures by adding **assignees** to the "@semantic-release/github" plugin in [.releaserc.yaml](/.releaserc.yaml).
-
-4. Enable [**Terratest**][terratest-url] testing suite:
-
-   1. From the [tests dir](/tests/), run `go mod init "<MODULE_NAME>"` to initialize a go module, where `<MODULE_NAME>` is the name of your module, typically in the format `github.com/<YOUR_USERNAME>/<YOUR_REPO_NAME>`.
-      > Example: `go mod init github.com/trevor-anderson/template-terraform-module/tests`.
-   2. Run `go mod tidy` to ensure all required package dependencies are installed.
-   3. The existing test can be configured using the file [tests/test_params.yaml][test-params-file]. See [**Testing**](#testing) for more info.
-      > Your tests will be run by the ["Test" GitHub Action workflow](/.github/workflows/test.yaml), but you can also run them manually from the [tests dir](/tests/) using `go test -v -timeout 30m` (the flags are optional).
-   4. In order for Terratest to run within a CI environment, you will need to provision access to your cloud resources in the ["Test" workflow](/.github/workflows/test.yaml). This is best accomplished by [adding GitHub as an OpenID Connect Identity Provider][github-oidc-info-url] within your cloud platform account. If you're operating within a multi-account organization, use a "Sandbox" account.
-   5. Once GitHub has been added as an OIDC Identity Provider, add the relevant action for your cloud provider which initiates the OIDC auth flow to authenticate the GitHub OIDC Provider and permits access to the desired cloud resources:
-
-      - AWS: [aws-actions/configure-aws-credentials][github-oidc-aws]
-      - Azure: [azure/login][github-oidc-azure]
-      - GCP: [google-github-actions/auth][github-oidc-gcp]
-      - HashiCorp Vault: [hashicorp/vault-action][github-oidc-vault]
-      - Others: [custom action using JWTs][github-oidc-others-custom-jwt]
-
-5. Profit 💰💰💰🥳🎉 _(Also, don't forget to remove this section from the README)_ <!-- https://knowyourmeme.com/memes/profit -->
-
-> Need help? 🤔 Check out my new [**YouTube Channel**](https://www.youtube.com/channel/UCguSCK_j1obMVXvv-DUS3ng) with helpful guides covering how to **_code your cloud_** with Terraform, Terragrunt, Packer, Golang, CI/CD tools, and more.
-
-<!-- Don't remove the pre-commit TF-Docs hook comments, they're used to auto-gen your module's documentation. -->
-
 <!-- BEGINNING OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
 <!-- prettier-ignore-start -->
 
@@ -213,13 +154,5 @@ Trevor Anderson - [@TeeRevTweets](https://twitter.com/teerevtweets) - [T.Anderso
 [semantic-shield]: https://img.shields.io/badge/%20%20%F0%9F%93%A6%F0%9F%9A%80-semantic--release-E10079.svg
 [semantic-gh-action-url]: https://github.com/cycjimmy/semantic-release-action
 [license-shield]: https://img.shields.io/badge/license-Apache_2.0-000080.svg?labelColor=gray
-[gh-action-docs-url]: https://docs.github.com/en/actions/security-guides/encrypted-secrets
-[gh-pat-docs-url]: https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/creating-a-personal-access-token
 [terratest-url]: https://terratest.gruntwork.io/docs/
 [test-params-file]: /tests/test_params.yaml
-[github-oidc-info-url]: https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/about-security-hardening-with-openid-connect
-[github-oidc-aws]: https://github.com/marketplace/actions/configure-aws-credentials-action-for-github-actions
-[github-oidc-azure]: https://github.com/Azure/login
-[github-oidc-gcp]: https://github.com/google-github-actions/auth
-[github-oidc-vault]: https://github.com/hashicorp/vault-action
-[github-oidc-others-custom-jwt]: https://docs.github.com/en/actions/deployment/security-hardening-your-deployments/configuring-openid-connect-in-cloud-providers
