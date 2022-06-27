@@ -26,8 +26,8 @@ jobs:
       - name: Configure AWS credentials from Test account
         uses: aws-actions/configure-aws-credentials@v1
         with:
-          role-to-assume: ${{ secrets.GH_OIDC_ROLE_ARN }}
-          aws-region: ${{ secrets.AWS_REGION }}
+          role-to-assume: "${{ secrets.GH_OIDC_ROLE_ARN }}"
+          aws-region: "${{ secrets.AWS_REGION }}"
       - name: Run Tests
         shell: bash
         run: cd tests && go test -v -timeout 30m
